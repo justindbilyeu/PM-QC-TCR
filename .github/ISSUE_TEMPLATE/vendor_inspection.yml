@@ -1,0 +1,30 @@
+name: Vendor/Material Inspection
+description: Record vendor deliveries and material checks
+title: "[Vendor] <Supplier> — <PO or Ticket>"
+labels: ["Vendor","Materials"]
+body:
+  - type: input
+    id: supplier
+    attributes:
+      label: Supplier
+      placeholder: e.g., ABC Supply
+    validations:
+      required: true
+  - type: textarea
+    id: materials
+    attributes:
+      label: Materials received
+      placeholder: |
+        - Shingle: 3-tab IR, driftwood, 75 bundles
+        - Underlayment: synthetic, 10 rolls
+        - Drip edge: black, 250 ft
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: Counts match PO
+        - label: Pallets wrapped/covered
+        - label: Stored off ground
+        - label: No visible damage
+        - label: Color/lot matched

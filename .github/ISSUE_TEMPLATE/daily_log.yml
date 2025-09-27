@@ -1,0 +1,20 @@
+name: Daily Log
+description: Personal daily PM/QC notes
+title: "Daily Log — {{date}}"
+labels: ["Dashboard"]
+body:
+  - type: textarea
+    id: plan
+    attributes:
+      label: Plan for today
+      placeholder: Top 3 and any hard appointments.
+  - type: textarea
+    id: done
+    attributes:
+      label: What I did
+      placeholder: Wins, blockers, context.
+  - type: textarea
+    id: followups
+    attributes:
+      label: Follow-ups
+      placeholder: People to ping, docs to send, etc.

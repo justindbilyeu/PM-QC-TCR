@@ -1,0 +1,28 @@
+name: Post Checklist on Issue
+on:
+  issues:
+    types: [opened, edited]
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Determine checklist
+        id: pick
+        run: |
+          LABELS="$(jq -r '[ .issue.labels[].name ] | join(",")' < $GITHUB_EVENT_PATH)"
+          FILE=""
+          if echo "$LABELS" | grep -qi "Punchlist"; then FILE="docs/checklists/punchlist.md"; fi
+          if echo "$LABELS" | grep -qi "QC"; then FILE="docs/checklists/job-qc-audit.md"; fi
+          if echo "$LABELS" | grep -qi "Safety"; then FILE="docs/checklists/safety-spotcheck.md"; fi
+          echo "file=$FILE" >> $GITHUB_OUTPUT
+      - name: Update issue body
+        if: steps.pick.outputs.file != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          BODY="$(cat ${{ steps.pick.outputs.file }})"
+          gh issue edit ${{ github.event.issue.number }} --body "$BODY"

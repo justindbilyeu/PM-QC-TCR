@@ -1,0 +1,47 @@
+name: Daily QC Digest
+on:
+  schedule:
+    - cron: "30 12 * * *"  # 07:30 America/Chicago
+  workflow_dispatch: {}
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build digest body
+        id: body
+        run: |
+          TODAY="$(date -u +%F)"
+          echo "## QC Dashboard — $TODAY" > body.md
+          echo "" >> body.md
+          echo "### Open Punchlists" >> body.md
+          echo "" >> body.md
+          gh issue list --label 'Punchlist' --state open --limit 50 --json number,title,state,labels --template '{{range .}}{{.number}} · {{.title}}{{"\\n"}}{{end}}' >> body.md || true
+          echo "" >> body.md
+          echo "### Audits Due (label: QC)" >> body.md
+          echo "" >> body.md
+          gh issue list --label 'QC' --state open --limit 50 --json number,title,state,labels --template '{{range .}}{{.number}} · {{.title}}{{"\\n"}}{{end}}' >> body.md || true
+          echo "" >> body.md
+          echo "### Urgent" >> body.md
+          echo "" >> body.md
+          gh issue list --label 'Urgent' --state open --limit 50 --json number,title,state,labels --template '{{range .}}{{.number}} · {{.title}}{{"\\n"}}{{end}}' >> body.md || true
+          echo "BODY<<EOF" >> $GITHUB_OUTPUT
+          sed -n '1,200p' body.md >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Open or update today's digest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="QC Dashboard — $(date -u +%F)"
+          NUM=$(gh issue list --search "in:title $(date -u +%F) QC Dashboard" --json number --jq ".[0].number" || true)
+          if [ -z "$NUM" ] || [ "$NUM" = "null" ]; then
+            gh issue create --title "$TITLE" --body "${{ steps.body.outputs.BODY }}" --label "QC,Dashboard"
+          else
+            gh issue comment "$NUM" --body "🔄 Auto-update at $(date -u +%H:%M) UTC"
+            gh issue edit "$NUM" --body "${{ steps.body.outputs.BODY }}"
+          fi
