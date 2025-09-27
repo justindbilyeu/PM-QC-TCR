@@ -1,0 +1,12 @@
+[
+  {"name":"QC","color":"0e8a16","description":"Quality Control / Audit"},
+  {"name":"Punchlist","color":"c5def5","description":"Outstanding fixes"},
+  {"name":"Safety","color":"d93f0b","description":"Safety concerns / reports"},
+  {"name":"Urgent","color":"b60205","description":"High priority"},
+  {"name":"Scheduling","color":"5319e7","description":"Calendar / timing"},
+  {"name":"Materials","color":"1d76db","description":"Vendors, materials, delivery"},
+  {"name":"Warranty","color":"f9d0c4","description":"Warranty matters"},
+  {"name":"Customer","color":"fbca04","description":"Customer communication"},
+  {"name":"Vendor","color":"e99695","description":"Vendor coordination"},
+  {"name":"Dashboard","color":"ededed","description":"Bot-created status issues"}
+]

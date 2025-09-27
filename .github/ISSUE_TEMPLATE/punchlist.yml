@@ -1,0 +1,30 @@
+name: Punchlist
+description: Track fixes outstanding on a job.
+title: "[PL] <CustomerLastName> — <Street Address>"
+labels: ["Punchlist"]
+body:
+  - type: input
+    id: job_id
+    attributes:
+      label: Job ID / Claim #
+    validations:
+      required: true
+  - type: textarea
+    id: items
+    attributes:
+      label: Items
+      description: One per line. Use short bullets.
+      placeholder: |
+        - Replace missing ridge cap on N-facing hip
+        - Seal pipe boot @ kitchen vent
+        - Paint exposed fasteners on drip edge
+  - type: dropdown
+    id: status
+    attributes:
+      label: Status
+      options:
+        - New
+        - Scheduled
+        - In Progress
+        - Blocked
+        - Done

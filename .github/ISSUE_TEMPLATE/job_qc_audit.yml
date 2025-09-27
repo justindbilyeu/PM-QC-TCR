@@ -1,0 +1,48 @@
+name: Job QC Audit
+description: Structured audit for a roof job (pre/during/post).
+title: "[QC] <CustomerLastName> — <Street Address>"
+labels: ["QC"]
+body:
+  - type: input
+    id: job_id
+    attributes:
+      label: Job ID / Claim #
+      placeholder: e.g., TCR-24-0912 or 1234567
+    validations:
+      required: true
+  - type: input
+    id: address
+    attributes:
+      label: Address
+      placeholder: 123 Main St, Austin, TX
+    validations:
+      required: true
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Project Phase
+      options:
+        - Pre-Install
+        - In-Progress
+        - Post-Install
+        - Warranty/Service
+    validations:
+      required: true
+  - type: checkboxes
+    id: photo_sets
+    attributes:
+      label: Photo Sets Attached
+      options:
+        - label: Front/Back/Left/Right elevations
+        - label: Roof planes overview
+        - label: Flashings & penetrations
+        - label: Valleys & step flashing
+        - label: Ridge/hip/edge details
+        - label: Underlayment & decking
+        - label: Materials delivery & storage
+        - label: Final cleanup & magnet roll
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes / Observations
+      placeholder: Brief bullets; attach photos separately.
